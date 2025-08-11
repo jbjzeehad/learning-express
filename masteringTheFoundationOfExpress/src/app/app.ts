@@ -1,38 +1,69 @@
 import express, { Application, Request, Response } from "express";
-import fs from "fs";
-import path from "path";
+import { todosRouter } from "../todos/todos.route";
 const app: Application = express();
 
 app.use(express.json());
 
-const filePath = path.join(__dirname, "../../db/todo.json");
+// const todosRouter = express.Router();
+const userRouter = express.Router();
+
+app.use("/todos", todosRouter);
+app.use("/users", userRouter);
+
+// todosRouter.get("/todos", (req: Request, res: Response) => {
+//   const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+
+//   console.log(data);
+
+//   res.json({
+//     message: "From Todos Router",
+//     data,
+//   });
+// });
+
+// const filePath = path.join(__dirname, "../../db/todo.json");
 
 app.get("/", (req: Request, res: Response) => {
   // console.log({ req, res });
   res.send("Welcome to Todos App");
 });
-app.get("/todos/:title/:body", (req: Request, res: Response) => {
-  console.log("From Query", req.query);
-  console.log("From Params", req.params);
 
-  const data = fs.readFileSync(filePath, { encoding: "utf-8" });
-  // res.writeHead(200, {
-  //   "content-type": "application/json",
-  // });
+// app.get("/todos", (req: Request, res: Response) => {
+//   console.log("From Query", req.query);
+//   console.log("From Params", req.params);
 
-  // res.end(data);
+//   const data = fs.readFileSync(filePath, { encoding: "utf-8" });
 
-  // console.log(data);
+//   res.json(data);
+// });
 
-  // res.send("I am learning express with typescript");
-  // res.send(data);
-  res.json(data);
-});
-app.post("/todos/create-todo", (req: Request, res: Response) => {
-  const { title, body } = req.body;
-  // console.log(title, body);
-  res.send("I am learning express with typescript");
-});
+// app.get("/todos/:title/:body", (req: Request, res: Response) => {
+//   console.log("From Query", req.query);
+//   console.log("From Params", req.params);
+
+//   const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+//   res.writeHead(200, {
+//     "content-type": "application/json",
+//   });
+
+//   res.end(data);
+
+//   console.log(data);
+
+//   res.send("I am learning express with typescript");
+//   res.send(data);
+//   res.json(data);
+// });
+// ----------------------
+// app.post("/todos/create-todo", (req: Request, res: Response) => {
+//   const { title, body } = req.body;
+//   // console.log(title, body);
+//   res.send("I am learning express with typescript");
+// });
+
+// [app] - [express.json] - [todosRouter] - [Root Route "/"] - [GET "/todos"]
+
+// [todosRouter] - [get all todos /todos GET] - [create todo /todos/create-todo POST todo]
 
 export default app;
 
