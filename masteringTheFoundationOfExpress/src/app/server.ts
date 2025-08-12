@@ -1,19 +1,19 @@
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { client } from "../config/mongodb.js";
 import app from "./app.js";
 
 let server;
 const port = 5000;
 
-const uri =
-  "mongodb+srv://mongodb:mongodb123456@tour.nemxwwb.mongodb.net/todosDB?retryWrites=true&w=majority&appName=tour";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+// const uri =
+//   "mongodb+srv://mongodb:mongodb123456@tour.nemxwwb.mongodb.net/todosDB?retryWrites=true&w=majority&appName=tour";
+// // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+// const client = new MongoClient(uri, {
+//   serverApi: {
+//     version: ServerApiVersion.v1,
+//     strict: true,
+//     deprecationErrors: true,
+//   },
+// });
 
 const bootstrap = async () => {
   await client.connect();

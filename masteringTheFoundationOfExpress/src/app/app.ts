@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import { todosRouter } from "../todos/todos.route";
 const app: Application = express();
 
@@ -23,9 +23,55 @@ app.use("/users", userRouter);
 
 // const filePath = path.join(__dirname, "../../db/todo.json");
 
-app.get("/", (req: Request, res: Response) => {
-  // console.log({ req, res });
-  res.send("Welcome to Todos App");
+app.get(
+  "/",
+  (req: Request, res: Response, next: NextFunction) => {
+    console.log({
+      url: req.url,
+      method: req.method,
+      header: req.header,
+    });
+    next();
+  },
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // console.log(Something);
+
+      res.send("Welcome to Todos App");
+    } catch (error) {
+      next(error);
+    }
+    // res.send("Welcome to Todos App");
+  }
+);
+app.get(
+  "/error",
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // console.log(something);
+      res.send("Welcome to Error App");
+    } catch (error) {
+      next(error);
+    }
+
+    // res.send("Welcome to Todos App");
+  }
+);
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).send({ message: "Route not fouund" });
+});
+
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  if (error) {
+    console.log("error", error);
+    res.status(400).json({
+      message: "Something went wrong from global error handler",
+      error,
+    });
+  }
 });
 
 // app.get("/todos", (req: Request, res: Response) => {
